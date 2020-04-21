@@ -1,6 +1,7 @@
 import React from "react";
-import { render, waitFor } from "@testing-library/react";
+import { render, waitFor, fireEvent } from "@testing-library/react";
 import App from "./App";
+import { userEvent } from "@testing-library/user-event";
 
 import { fetchShow as mockFetchShow } from "./api/fetchShow";
 
@@ -724,4 +725,45 @@ test("Renders fetching data prior to loading data from API to populate list of s
     // assert that the button is in the Dom
     expect(select).toBeInTheDocument();
   });
+});
+
+test("Test that after API loads user can select season 1 as an option", async () => {
+  mockFetchShow.mockResolvedValueOnce(episodesData);
+
+  const { getByText, debug, queryAllByTestId } = render(<App />);
+
+  // After API comes back make sure button renders. We've really already done this once before.
+  await waitFor(() => {
+    // query for the select a season button to be in the DOM
+    const select = getByText(/select a season/i);
+    // debug();
+
+    // assert that the button is in the Dom
+    expect(select).toBeInTheDocument();
+  });
+
+  const select = getByText(/select a season/i);
+  // debug();
+
+  // assert that the button is in the Dom
+  expect(select).toBeInTheDocument();
+
+  // click button as a user would to display a list of seasons
+  fireEvent.mouseDown(select);
+  // debug();
+
+  // query to see if season 1 is a viable option to choose from
+  const seasonOne = getByText(/season 1/i);
+
+  // assert that the season is in the DOM
+  expect(seasonOne).toBeInTheDocument();
+
+  // click season 1 option
+  fireEvent.mouseDown(seasonOne);
+  // debug();
+
+  // query for the episodes being rendered
+  const episodes = queryAllByTestId(/episodes/i);
+  // assert that they are listed on the DOM
+  expect(episodes).toHaveLength(8);
 });
