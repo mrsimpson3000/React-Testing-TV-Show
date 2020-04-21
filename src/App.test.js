@@ -706,14 +706,22 @@ const episodesData = {
   },
 };
 
-test("Renders fetching data prior to loading data from API to populate list of seasons", async () => {
+test("Renders fetching data prior to loading data from API to populate list of seasons then renders select a season", async () => {
   mockFetchShow.mockResolvedValueOnce(episodesData);
 
   const { getByText } = render(<App />);
 
-  // query for the select a season button to be in the DOM
-  const select = getByText(/select a season/i);
+  // query that the fetching data text appears while we wait for the data to come back from the API
+  const fetching = getByText(/fetching data.../i);
 
-  // assert that the button is in the Dom
-  expect(select).toBeInTheDocument();
+  // assert that the fetching data text appears in the DOM
+  expect(fetching).toBeInTheDocument();
+
+  await waitFor(() => {
+    // query for the select a season button to be in the DOM
+    const select = getByText(/select a season/i);
+
+    // assert that the button is in the Dom
+    expect(select).toBeInTheDocument();
+  });
 });
