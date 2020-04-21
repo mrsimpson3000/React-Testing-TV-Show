@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import Dropdown from "react-dropdown";
 import parse from "html-react-parser";
 
@@ -18,6 +17,7 @@ export default function App() {
   // Moved fetchShow out to it's own file inside the api directory
   useEffect(() => {
     fetchShow().then((res) => {
+      console.log(res);
       setShow(res.data);
       setSeasons(formatSeasons(res.data._embedded.episodes));
     });
