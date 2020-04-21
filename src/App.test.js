@@ -706,14 +706,14 @@ const episodesData = {
   },
 };
 
-test("Renders episode data for season 1 when season 1 is chosen from the dropdown menu", async () => {
+test("Renders fetching data prior to loading data from API to populate list of seasons", async () => {
   mockFetchShow.mockResolvedValueOnce(episodesData);
 
   const { getByText } = render(<App />);
 
-  const dropDown = getByText(/select a season/i);
+  // query for the select a season button to be in the DOM
+  const select = getByText(/select a season/i);
 
-  expect(dropDown).toBeInTheDocument();
-
-  // expect(getByText(/season 1/i)).toBeInTheDocument()
+  // assert that the button is in the Dom
+  expect(select).toBeInTheDocument();
 });

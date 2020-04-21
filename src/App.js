@@ -17,7 +17,7 @@ export default function App() {
   // Moved fetchShow out to it's own file inside the api directory
   useEffect(() => {
     fetchShow().then((res) => {
-      console.log(res);
+      // console.log(res);
       setShow(res.data);
       setSeasons(formatSeasons(res.data._embedded.episodes));
     });
